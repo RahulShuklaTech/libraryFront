@@ -17,13 +17,10 @@ const useStyles = makeStyles({
 })
 
 
-export const SignUp = () => {
+export const Login = () => {
     let classes = useStyles();
-    const [name,setName] = useState("");
     const [email,setEmail] = useState("");
     const [password,setPassword] = useState("");
-    const [confirmPassword,setConfirmPassword] = useState("");
-    const [image, setImage] = useState(null);
     const [loading,setLoading] = useState("");
 
     const signUpUrl = 'http://localhost:3300/auth/signup';
@@ -31,21 +28,14 @@ export const SignUp = () => {
     const submitForm = async (e) => {
         setLoading(true);
         let formData = new FormData();
-        formData.append("name",name)
         formData.append("password",password)
         formData.append("email",email)
-        if(image !== null) formData.append("profilePic",image);
-        let response = await fetch(signUpUrl, {
-            method: "POST",
-            body: formData
-        })
-        if(response.status !== 201){
-            console.log(await response.text());
+            // console.log(await response.text());
             setLoading(false);
             return;
-        }
-        let result = await response.json();
-        console.log(result);
+        
+        // let result = await response.json();
+        // console.log(result);
         setLoading(false);
 
     }
@@ -54,27 +44,14 @@ export const SignUp = () => {
         <Paper elevation ={2} className = {classes.container}>
             <Typography variant = "h4">Sign Up</Typography>
             {/* <form autoComplete = "off"> */}
-                <TextField value = {name} onChange = {e => setName(e.target.value)}label = "Name" name = "name" variant = "outlined" />
                 <TextField value = {email} onChange = {e => setEmail(e.target.value)}label = "Email" name = "email" variant = "outlined" type = "email" />
                 <TextField value = {password} onChange = {e => setPassword(e.target.value)} label = "Password" type = "password" name = "password" variant ="outlined" />
-                <TextField value = {confirmPassword} onChange = {e => setConfirmPassword(e.target.value)} label = "Confirm Password" type = "password" variant = "outlined" />
-                <input 
-                    accept = "image/*"
-                    className = {classes.input}
-                    id ="photo"
-                    type = "file"
-                    name = "photo"
-                    onChange = {e => setImage(e.target.files[0])}
-                />
-                <label htmlFor = "photo">
-                    <Button variant ="contained" color = "primary" component= "span">Upload Avatar</Button>
-                    {image.name}
-                    </label>    
-                
+               
+               
                 <Button 
                     variant= "contained" 
                     color ="primary"
-                    disabled = {!name || !email || !password || password !== confirmPassword}
+                    disabled = { !email || !password }
                     onClick = {submitForm}
                     >Submit</Button>
 

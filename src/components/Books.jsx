@@ -3,6 +3,7 @@ import React from 'react'
 import { useEffect,useState } from 'react';
 import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
 import SimpleDialog from './SimpleDialog';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 
 export const Books = () => {
@@ -63,7 +64,7 @@ export const Books = () => {
     
 
 
-    if(loading) return <h1>Getting Books</h1>
+    if(loading) return <div><h1>Getting Books</h1><CircularProgress /></div>
     return (
         <Container elevation={8} >
             <h1>Books List</h1>

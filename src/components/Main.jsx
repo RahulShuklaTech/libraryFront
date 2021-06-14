@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Route, Switch,  } from 'react-router-dom';
+import { Route, Switch, } from 'react-router-dom';
 
 import { makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
@@ -12,7 +12,10 @@ import Drawer from '@material-ui/core/Drawer';
 // eslint-disable-next-line no-unused-vars
 import ListItemText from '@material-ui/core/ListItemText';
 import { SideBar } from './SideBar';
+import { Login } from './Login';
 import { Books } from './Books';
+import { SignUp } from './SignUp';
+
 import { Container } from '@material-ui/core';
 
 
@@ -66,6 +69,14 @@ export const Main = () => {
                     <Route exact path="/books" render={(props) => (
 
                         <Books />
+                    )} />
+                    <Route exact path="/login" render={(props) => (
+
+                        <Login />
+                    )} />
+                    <Route exact path="/signup" render={(props) => (
+
+                        <SignUp />
                     )} />
                 </Switch>
             </Container>
