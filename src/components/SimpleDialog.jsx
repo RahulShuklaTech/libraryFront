@@ -27,45 +27,25 @@ const useStyles = makeStyles((theme) => ({
 
 export default function SimpleDialog(props) {
   const classes = useStyles();
-  const { onClose, selectedValue, open, deleteYes } = props;
+  const { onClose,  open, deleteYes } = props;
 
   const handleClose = () => {
-    onClose(selectedValue);
+    onClose();
   };
 
 
   return (
     <Dialog onClose={handleClose} aria-labelledby="simple-dialog-title" open={open}>
       <DialogTitle id="simple-dialog-title">Confirmation</DialogTitle>
-      {/* <List>
-        {emails.map((email) => (
-          <ListItem button onClick={() => handleListItemClick(email)} key={email}>
-            <ListItemAvatar>
-              <Avatar className={classes.avatar}>
-                <PersonIcon />
-              </Avatar>
-            </ListItemAvatar>
-            <ListItemText primary={email} />
-          </ListItem>
-        ))}
-
-        <ListItem autoFocus button onClick={() => handleListItemClick('addAccount')}>
-          <ListItemAvatar>
-            <Avatar>
-              <AddIcon />
-            </Avatar>
-          </ListItemAvatar>
-          <ListItemText primary="Add account" />
-        </ListItem>
-      </List> */}
       
+
       
       <div className={classes.root}>
       <h3>delete this book</h3>
         <Button onClick = {handleClose} variant="contained" color="primary">
           No
         </Button>
-        <Button onClick = {deleteYes(true)} variant="contained" color="secondary" >
+        <Button onClick = {() => {deleteYes(); handleClose()}} variant="contained" color="secondary" >
           Yes
         </Button>
 
@@ -77,7 +57,7 @@ export default function SimpleDialog(props) {
 SimpleDialog.propTypes = {
   onClose: PropTypes.func.isRequired,
   open: PropTypes.bool.isRequired,
-  selectedValue: PropTypes.string.isRequired,
+  
 };
 
 

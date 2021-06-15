@@ -1,4 +1,6 @@
 import { Button, makeStyles, Paper, TextField, Typography } from '@material-ui/core'
+import CircularProgress from '@material-ui/core/CircularProgress';
+
 import React, { useState } from 'react'
 
 const useStyles = makeStyles({
@@ -31,13 +33,15 @@ export const SignUp = () => {
     const submitForm = async (e) => {
         setLoading(true);
         let formData = new FormData();
-        formData.append("name",name)
+        formData.append("username",name)
         formData.append("password",password)
         formData.append("email",email)
         if(image !== null) formData.append("profilePic",image);
+        console.log(formData)
         let response = await fetch(signUpUrl, {
             method: "POST",
-            body: formData
+            body: formData,
+           
         })
         if(response.status !== 201){
             console.log(await response.text());
@@ -54,7 +58,7 @@ export const SignUp = () => {
         <Paper elevation ={2} className = {classes.container}>
             <Typography variant = "h4">Sign Up</Typography>
             {/* <form autoComplete = "off"> */}
-                <TextField value = {name} onChange = {e => setName(e.target.value)}label = "Name" name = "name" variant = "outlined" />
+                <TextField value = {name} onChange = {e => setName(e.target.value)}label = "Name" name = "username" variant = "outlined" />
                 <TextField value = {email} onChange = {e => setEmail(e.target.value)}label = "Email" name = "email" variant = "outlined" type = "email" />
                 <TextField value = {password} onChange = {e => setPassword(e.target.value)} label = "Password" type = "password" name = "password" variant ="outlined" />
                 <TextField value = {confirmPassword} onChange = {e => setConfirmPassword(e.target.value)} label = "Confirm Password" type = "password" variant = "outlined" />
@@ -68,7 +72,7 @@ export const SignUp = () => {
                 />
                 <label htmlFor = "photo">
                     <Button variant ="contained" color = "primary" component= "span">Upload Avatar</Button>
-                    {image.name}
+                    {image?.name}
                     </label>    
                 
                 <Button 
@@ -76,9 +80,11 @@ export const SignUp = () => {
                     color ="primary"
                     disabled = {!name || !email || !password || password !== confirmPassword}
                     onClick = {submitForm}
-                    >Submit</Button>
+                    >{ loading && <CircularProgress />}Submit</Button>
 
             {/* </form> */}
         </Paper>
     )
 }
+
+
