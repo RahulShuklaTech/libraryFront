@@ -3,6 +3,19 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import { BrowserRouter as Router } from 'react-router-dom';
+import axios from "axios";
+
+
+axios.interceptors.request.use(
+  function(req) {
+    
+    console.log(req.method,req.url)
+    return req;
+  },
+  function (error){
+    return Promise.reject(error)
+  }
+)
 
 
 ReactDOM.render(
