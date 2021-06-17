@@ -1,61 +1,89 @@
-// import { Button, makeStyles, Paper, TextField, Typography } from '@material-ui/core'
-// import React, { useState } from 'react'
+import { Button, makeStyles, Paper, TextField, Typography } from '@material-ui/core'
+import CircularProgress from '@material-ui/core/CircularProgress';
 
-// const useStyles = makeStyles({
-//     container: {
-//         display: "flex",
-//         flexDirection : "column",
-//         gap: '1rem',
-//         padding: '1rem',
-//         width: "50rem",
-//         margin: "10px auto"
+import React, { useState } from 'react'
+
+const useStyles = makeStyles({
+    container: {
+        display: "flex",
+        flexDirection : "column",
+        gap: '1rem',
+        padding: '1rem',
+        width: "50rem",
+        margin: "10px auto"
         
-//     },
-//     input : {
-//         display: "none"
-//     }
-// })
+    },
+    input : {
+        display: "none"
+    }
+})
 
 
-// export const Login = () => {
-//     let classes = useStyles();
-//     const [email,setEmail] = useState("");
-//     const [password,setPassword] = useState("");
-//     //const [loading,setLoading] = useState("");
+export const Login = () => {
+    let classes = useStyles();
+    const [email,setEmail] = useState("");
+    const [password,setPassword] = useState("");
+    const [loading,setLoading] = useState(false);
 
-//     //const signUpUrl = 'http://localhost:3300/auth/signup';
+    const loginUrl = 'http://localhost:3300/auth/login';
 
-//     // const submitForm = async (e) => {
-//     //     setLoading(true);
-//     //     let formData = new FormData();
-//     //     formData.append("password",password)
-//     //     formData.append("email",email)
-//     //         // console.log(await response.text());
-//     //         setLoading(false);
-//     //         return;
+    const submitForm = async (e) => {
+        setLoading(true);
+        let formData = new FormData();
+        formData.append("password",password)
+        formData.append("email",email)
+
         
-//     //     // let result = await response.json();
-//     //     // console.log(result);
-//     //     //setLoading(false);
 
-//     // }
+        let response = await fetch(loginUrl, {
+            method: 'POST',
+            body: formData,
+        })
 
-// //     return (
-// //         <Paper elevation ={2} className = {classes.container}>
-// //             <Typography variant = "h4">Sign Up</Typography>
-// //             {/* <form autoComplete = "off"> */}
-// //                 <TextField value = {email} onChange = {e => setEmail(e.target.value)}label = "Email" name = "email" variant = "outlined" type = "email" />
-// //                 <TextField value = {password} onChange = {e => setPassword(e.target.value)} label = "Password" type = "password" name = "password" variant ="outlined" />
-               
-               
-// //                 <Button 
-// //                     variant= "contained" 
-// //                     color ="primary"
-// //                     disabled = { !email || !password }
-// //                     onClick = {submitForm}
-// //                     >Submit</Button>
+        if (response.status !==200){
+            console.log("hre")
+            console.log(await response.text());
+            setLoading(false);
+            return;
+        }
+        let result = await response.json();
+        console.log(result);
+        setLoading(false);
+       
+        //     // console.log(await response.text());
+        //     setLoading(false);
+        //     return;
+        
+        // let result = await response.json();
+        // console.log(result);
+        //setLoading(false);
 
-// //             {/* </form> */}
-// //         </Paper>
-// //     )
-// // }
+    }
+
+    return (
+        <Paper elevation ={2} className = {classes.container}>
+            <Typography variant = "h4">Login</Typography>
+                <TextField 
+                    value = {email} 
+                    onChange = {e => setEmail(e.target.value)}
+                    label = "Email" 
+                    name = "email" 
+                    variant = "outlined" 
+                    type = "email" />
+                <TextField 
+                    value = {password} 
+                    onChange = {e => setPassword(e.target.value)} 
+                    label = "Password" 
+                    type = "password" 
+                    name = "password" 
+                    variant ="outlined" />
+                <Button 
+                    variant= "contained" 
+                    color ="primary"
+                    disabled = { !email || !password || loading}
+                    onClick = {submitForm}
+                    >Login {loading && <CircularProgress />}</Button>
+
+        </Paper>
+    )
+}
