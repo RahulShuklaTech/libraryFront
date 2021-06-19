@@ -2,6 +2,7 @@ import { Button, makeStyles, Paper, TextField, Typography } from '@material-ui/c
 import CircularProgress from '@material-ui/core/CircularProgress';
 
 import React, { useState } from 'react'
+import { useHistory } from 'react-router-dom';
 
 const useStyles = makeStyles({
     container: {
@@ -20,13 +21,13 @@ const useStyles = makeStyles({
 
 
 export const Login = () => {
+    const history = useHistory();
     let classes = useStyles();
     const [email,setEmail] = useState("");
     const [password,setPassword] = useState("");
     const [loading,setLoading] = useState(false);
 
     const loginUrl = 'http://localhost:3300/auth/login';
-
     const submitForm = async (e) => {
         setLoading(true);
         let formData = new FormData();
@@ -47,16 +48,13 @@ export const Login = () => {
             return;
         }
         let result = await response.json();
+        localStorage.setItem("token", result.token)
+        localStorage.setItem("refreshToken", result.refreshToken)
         console.log(result);
-        setLoading(false);
-       
-        //     // console.log(await response.text());
-        //     setLoading(false);
-        //     return;
         
-        // let result = await response.json();
-        // console.log(result);
-        //setLoading(false);
+        setLoading(false);
+        history.push("/")
+       
 
     }
 

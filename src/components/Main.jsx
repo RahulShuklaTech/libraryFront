@@ -1,5 +1,5 @@
-import React, { useState } from 'react'
-import { Route, Switch, } from 'react-router-dom';
+import React, { useEffect, useState } from 'react'
+import { Route, Switch, useHistory, } from 'react-router-dom';
 
 import { makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
@@ -17,6 +17,8 @@ import { Books } from './Books';
 import { SignUp } from './SignUp';
 
 import { Container } from '@material-ui/core';
+import { Link } from 'react-router-dom';
+import setupInterceptors from '../interceptors';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -38,12 +40,18 @@ const useStyles = makeStyles((theme) => ({
 
 export const Main = () => {
     const [drawerOpen, setDrawerOpen] = useState(false);
+    let history = useHistory();
+    setupInterceptors(history)
     const classes = useStyles();
+    const [token,setToken] = useState(
+        localStorage.getItem('token') || ""
+    )
     const toggleDrawer = () => {
 
         setDrawerOpen(open => !open);
     };
 
+    console.log("token from local",token)
     return (
         <div className={classes.root}>
             <AppBar position="static">
@@ -54,7 +62,7 @@ export const Main = () => {
                     <Typography variant="h6" className={classes.title}>
                         Library App
                     </Typography>
-                    <Button color="inherit">Login</Button>
+                    <Button color="inherit"><Link to = "/login">Login</Link></Button>
                 </Toolbar>
             </AppBar>
             <Drawer anchor="left" open={drawerOpen} onClose={toggleDrawer}  >
@@ -68,11 +76,16 @@ export const Main = () => {
                     )} />
                     <Route exact path="/books" render={(props) => (
 
-                        <Books />
+                        <Books
+                            token = {token}
+                         />
                     )} />
                     <Route exact path="/login" render={(props) => (
 
-                        <Login />
+                        <Login 
+                            token = {token}
+                            setToken ={setToken}
+                            />
                     )} />
                     <Route exact path="/signup" render={(props) => (
 

@@ -7,7 +7,7 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import axios from 'axios';
 
 let indexToDelete = null
-export const Books = () => {
+export const Books = ({token}) => {
 
     const useStyles = makeStyles({
         container: {
@@ -23,12 +23,22 @@ export const Books = () => {
     })
     
 
-    const getData = async () => {
 
-        const response =  await axios.get("http://localhost:3300/books/")//fetch("http://localhost:3300/books/")
-        const data = await response.json();
-        setBooks(data);
-        setLoading(false)
+    const getData = async () => {
+        
+
+        try{
+            const response =  await axios.get("books/")
+            const data = await response.data;
+            console.log("data",data)
+            setBooks(data);
+            setLoading(false)
+        }catch(e){
+            console.log("erroor",e.message);
+        }
+          
+        
+               
         
         
     }
